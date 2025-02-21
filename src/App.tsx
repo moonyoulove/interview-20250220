@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { cssRule } from "typestyle";
-import Forecast from "./Forecast.tsx";
-import Search from "./Search.tsx";
-import Weather from "./Weather.tsx";
+import Forecast from "./Forecast";
+import Search from "./Search";
+import Weather from "./Weather";
 
 cssRule(`#root {
   max-width: 1280px;
