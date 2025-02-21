@@ -1,7 +1,11 @@
+import { normalize, setupPage } from "csstips";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { cssRule } from "typestyle";
 import App from "./App.tsx";
+
+normalize();
+setupPage("#root");
 
 cssRule(`:root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
