@@ -57,3 +57,45 @@ export class Theme {
         delete this.context[name];
     }
 }
+
+export function useThrottle(delay = 100) {
+    let timer = -1;
+    let isRequested = false;
+    return throttle;
+
+    function throttle(callback: () => void) {
+        if (timer === -1) {
+            callback();
+            timer = window.setTimeout(() => {
+                if (isRequested) {
+                    callback();
+                    isRequested = false;
+                }
+                timer = -1;
+            }, delay);
+        } else {
+            isRequested = true;
+        }
+    }
+}
+
+export function useDebounce(delay = 100) {
+    let timer = -1;
+    let isRequested = false;
+    return throttle;
+
+    function throttle(callback: () => void) {
+        if (timer === -1) {
+            callback();
+            timer = window.setTimeout(() => {
+                if (isRequested) {
+                    callback();
+                    isRequested = false;
+                }
+                timer = -1;
+            }, delay);
+        } else {
+            isRequested = true;
+        }
+    }
+}

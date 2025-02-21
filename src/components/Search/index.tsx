@@ -3,7 +3,9 @@ import { stylesheet } from "typestyle";
 const sx = stylesheet({
     search: {},
     searchBox: {},
-    searchBtn: {}
+    searchBtn: {},
+    favoritesBtn: {},
+    temperatureBtn: {}
 });
 
 export default function Search() {
@@ -11,8 +13,8 @@ export default function Search() {
         <div className={sx.search}>
             <input type="text" className={sx.searchBox} />
             <button className={sx.searchBtn}>Search</button>
-            <button className={sx.searchBtn}>Favorites</button>
-            <button className={sx.searchBtn}>°C/°F</button>
+            <button className={sx.favoritesBtn}>Favorites</button>
+            <button className={sx.temperatureBtn}>°C/°F</button>
         </div>
     );
 }
