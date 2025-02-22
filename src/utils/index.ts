@@ -1,4 +1,5 @@
 import { customAlphabet } from "nanoid/non-secure";
+import { useCallback, useEffect, useRef } from "react";
 
 export class Theme {
     prefix;
@@ -58,44 +59,44 @@ export class Theme {
     }
 }
 
-export function useThrottle(delay = 100) {
-    let timer = -1;
-    let isRequested = false;
-    return throttle;
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
+type Callback = (...args: any[]) => any;
 
-    function throttle(callback: () => void) {
-        if (timer === -1) {
-            callback();
-            timer = window.setTimeout(() => {
-                if (isRequested) {
-                    callback();
-                    isRequested = false;
+export function useThrottle<T extends Callback>(callback: T, delay: number = 100) {
+    const timer = useRef(-1);
+    const isRequested = useRef(false);
+    const throttle = useCallback((...args: Parameters<T>) => {
+        if (timer.current === -1) {
+            callback(...args);
+            timer.current = window.setTimeout(() => {
+                if (isRequested.current) {
+                    callback(...args);
+                    isRequested.current = false;
                 }
-                timer = -1;
+                timer.current = -1;
             }, delay);
         } else {
-            isRequested = true;
+            isRequested.current = true;
         }
-    }
+    }, [callback, delay]);
+    useEffect(() => {
+        return () => clearTimeout(timer.current);
+    }, []);
+
+    return throttle;
 }
 
-export function useDebounce(delay = 100) {
-    let timer = -1;
-    let isRequested = false;
-    return throttle;
+export function useDebounce<T extends Callback>(callback: T, delay: number = 100) {
+    const timer = useRef(-1);
+    const debounce = useCallback((...args: Parameters<T>) => {
+        clearTimeout(timer.current);
+        timer.current = window.setTimeout(() => {
+            callback(...args);
+        }, delay);
+    }, [callback, delay]);
+    useEffect(() => {
+        return () => clearTimeout(timer.current);
+    }, []);
 
-    function throttle(callback: () => void) {
-        if (timer === -1) {
-            callback();
-            timer = window.setTimeout(() => {
-                if (isRequested) {
-                    callback();
-                    isRequested = false;
-                }
-                timer = -1;
-            }, delay);
-        } else {
-            isRequested = true;
-        }
-    }
+    return debounce;
 }
