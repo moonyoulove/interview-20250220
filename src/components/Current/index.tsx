@@ -1,5 +1,7 @@
 import { stylesheet } from "typestyle";
-import { GeoLocation, WeatherData } from "../../types";
+import weatherCodeDescriptions from "../../assets/descriptions.json";
+import { GeoLocation, TemperatureUnit, WeatherData } from "../../types";
+import { convertTemperature, convertWeatherCode } from "../../utils";
 
 const sx = stylesheet({
     current: {}
@@ -7,17 +9,20 @@ const sx = stylesheet({
 
 interface CurrentProps {
     geoData: GeoLocation;
-    weatherData: WeatherData
+    weatherData: WeatherData;
+    tmpUnit: TemperatureUnit;
 }
 
-export default function Current({ geoData, weatherData }: CurrentProps) {
+export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps) {
+    const { description } = convertWeatherCode(weatherCodeDescriptions, weatherData.current.weatherCode, !!weatherData.current.isDay);
+
     return (
         <div className={sx.current}>
-            <div>{geoData.name}</div>
-            <div>目前氣溫</div>
-            <div>天氣狀況</div>
-            <div>風速</div>
-            <div>濕度</div>
+            <div>Location: {geoData.name}{geoData.admin1 ? ` (${geoData.admin1})` : ""}</div>
+            <div>Temperature: {convertTemperature(weatherData.current.temperature2m, tmpUnit)}</div>
+            <div>Conditions: {description}</div>
+            <div>Wind Speed: {weatherData.current.windSpeed10m.toFixed(0)}km/h</div>
+            <div>Humidity: {weatherData.current.relativeHumidity2m}%</div>
         </div>
     );
 }

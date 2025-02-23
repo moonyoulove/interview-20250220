@@ -1,5 +1,7 @@
 import { stylesheet } from "typestyle";
-import { GeoLocation, WeatherData } from "../../types";
+import weatherCodeDescriptions from "../../assets/descriptions.json";
+import { TemperatureUnit, WeatherData } from "../../types";
+import { convertTemperature, convertWeatherCode } from "../../utils";
 
 const sx = stylesheet({
     forecast: {}
@@ -7,36 +9,26 @@ const sx = stylesheet({
 
 interface ForeCastProps {
     weatherData: WeatherData;
+    tmpUnit: TemperatureUnit;
 }
 
-export default function Forecast({ weatherData }: ForeCastProps) {
+export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
+    const dateFormat = new Intl.DateTimeFormat("en-US", { month: "numeric", day: "numeric", weekday: "long" });
     return (
         <li className={sx.forecast}>
-            <ul>
-                <div>日期</div>
-                <div>預測氣溫</div>
-                <div>天氣狀況</div>
-            </ul>
-            <ul>
-                <div>日期</div>
-                <div>預測氣溫</div>
-                <div>天氣狀況</div>
-            </ul>
-            <ul>
-                <div>日期</div>
-                <div>預測氣溫</div>
-                <div>天氣狀況</div>
-            </ul>
-            <ul>
-                <div>日期</div>
-                <div>預測氣溫</div>
-                <div>天氣狀況</div>
-            </ul>
-            <ul>
-                <div>日期</div>
-                <div>預測氣溫</div>
-                <div>天氣狀況</div>
-            </ul>
+            {Array.from({ length: 5 }, (_, i) => {
+                const { description } = convertWeatherCode(weatherCodeDescriptions, weatherData.daily.weatherCode[i], true);
+                const maxTemperture = convertTemperature(weatherData.daily.temperature2mMax[i], tmpUnit);
+                const minTemperture = convertTemperature(weatherData.daily.temperature2mMin[i], tmpUnit);
+
+                return (
+                    <ul key={i}>
+                        <div>{dateFormat.format(weatherData.daily.time[i])}</div>
+                        <div>{maxTemperture}/{minTemperture}</div>
+                        <div>{description}</div>
+                    </ul>
+                );
+            })}
         </li>
     );
 }

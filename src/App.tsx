@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { Key } from "swr";
 import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
 import { cssRule } from "typestyle";
 import Search from "./components/Search";
 import Weather from "./components/Weather";
-import { GeoCodingResponse } from "./types";
+import { GeoCodingResponse, TemperatureUnit } from "./types";
 
 cssRule(`#root {
   max-width: 1280px;
@@ -15,33 +16,37 @@ cssRule(`#root {
 
 export default function App() {
     const geoRes = useSWRMutation("https://geocoding-api.open-meteo.com/v1/search", fetchGeoCoding);
+    const [tmpUnit, setTmpUnit] = useState(TemperatureUnit.Celsius);
+
+    function handleTmpUnitChange() {
+        setTmpUnit((prev: TemperatureUnit) => (prev === TemperatureUnit.Celsius ? TemperatureUnit.Fahrenheit : TemperatureUnit.Celsius));
+    }
 
     return (
         <>
-            <Search geoFetchTrigger={geoRes.trigger}></Search>
-            <GeoResponse geoRes={geoRes}>
-                <Weather geoData={geoRes.data!.results[0]}></Weather>
-            </GeoResponse>
+            <Search geoFetchTrigger={geoRes.trigger} handleTmpUnitChange={handleTmpUnitChange} tmpUnit={tmpUnit}></Search>
+            <GeoResponse geoRes={geoRes} tmpUnit={tmpUnit}></GeoResponse>
         </>
     );
 }
 
 interface GeoResponseProps {
     geoRes: SWRMutationResponse<GeoCodingResponse, unknown, Key, Record<string, string>>;
-    children: React.ReactNode;
+    tmpUnit: TemperatureUnit;
 }
 
-function GeoResponse({ geoRes, children }: GeoResponseProps) {
+function GeoResponse({ geoRes, tmpUnit }: GeoResponseProps) {
     if (geoRes.error) {
         return <div>failed to search location</div>;
     }
     if (geoRes.isMutating) {
         return <div>search location...</div>;
     }
-    if (!geoRes.data) {
+    const geoData = geoRes.data?.results?.[0];
+    if (!geoData) {
         return <div>no location data</div>;
     }
-    return children;
+    return <Weather geoData={geoData} tmpUnit={tmpUnit}></Weather>;
 }
 
 async function fetchGeoCoding(urlStr: string, { arg: params }: { arg: Record<string, string> }): Promise<GeoCodingResponse> {

@@ -1,5 +1,6 @@
 import { customAlphabet } from "nanoid/non-secure";
 import { useCallback, useEffect, useRef } from "react";
+import { TemperatureUnit } from "../types";
 
 export class Theme {
     prefix;
@@ -98,4 +99,49 @@ export function useDebounce<T extends Callback>(callback: T, delay: number = 100
     }, []);
 
     return debounce;
+}
+
+export function convertTemperature(temperature: number, unit: TemperatureUnit) {
+    // [°F] = [°C] × 9⁄5 + 32
+    // fetched temperature is in Celsius
+    if (unit === TemperatureUnit.Fahrenheit) {
+        temperature = temperature * 9 / 5 + 32;
+    }
+    return temperature.toFixed() + (unit === TemperatureUnit.Celsius ? "°C" : "°F");
+}
+
+/**
+ * from https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c
+ */
+export interface WeatherCodeDescriptions {
+    [dayIndex: string]: {
+        day: WeatherCodeDescription;
+        night: WeatherCodeDescription;
+    };
+}
+
+export interface WeatherCodeDescription {
+    description: string;
+    icon: string;
+}
+
+export enum WeatherCodeIconBackground {
+    White = "w",
+    Transparent = "t"
+}
+
+export enum WeatherCodeIconSize {
+    X1 = "",
+    X2 = "@2x",
+    X4 = "@4x"
+}
+
+export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weatherCode: number, isDay: boolean,
+    background: WeatherCodeIconBackground = WeatherCodeIconBackground.Transparent, size: WeatherCodeIconSize = WeatherCodeIconSize.X1)
+{
+    const { description, icon } = descriptions[weatherCode][isDay ? "day" : "night"];
+    return {
+        description,
+        iconUrl: `https://openweathermap.org/img/wn/${icon}_${background}${size}.png`
+    };
 }

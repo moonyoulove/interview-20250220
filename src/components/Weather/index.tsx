@@ -2,7 +2,7 @@ import { WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
 import { fetchWeatherApi } from "openmeteo";
 import useSWR from "swr";
 import { stylesheet } from "typestyle";
-import { GeoCodingResponse, GeoLocation, WeatherData } from "../../types";
+import { GeoLocation, TemperatureUnit, WeatherData } from "../../types";
 import Current from "../Current";
 import Forecast from "../Forecast";
 
@@ -12,20 +12,22 @@ const sx = stylesheet({
 
 interface WeatherProps {
     geoData: GeoLocation;
+    tmpUnit: TemperatureUnit;
 }
 
-export default function Weather({ geoData }: WeatherProps) {
+export default function Weather({ geoData, tmpUnit }: WeatherProps) {
     const weatherRes = useSWR(() => {
         const params = {
             "latitude": geoData.latitude,
             "longitude": geoData.longitude,
             "current": ["temperature_2m", "relative_humidity_2m", "is_day", "weather_code", "wind_speed_10m"],
-            "forecast_days": 1
+            "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min"]
         };
-        return ["https://api.open-meteo.com/v1/forecast", params];
-    }, (...args) => console.log("Fetch:", ...args));
+        return { url: "https://api.open-meteo.com/v1/forecast", params };
+    }, fetchWeatherAndParse);
+
     if (weatherRes.error) {
-        return <div>failed to load weather</div>;
+        return <div>failed to load weather: {weatherRes.error.toString()}</div>;
     }
     if (weatherRes.isLoading) {
         return <div>loading weather...</div>;
@@ -34,26 +36,23 @@ export default function Weather({ geoData }: WeatherProps) {
         return <div>no weather data</div>;
     }
 
-    const weatherData = parseWeatherData(weatherRes.data);
-
     return (
         weatherRes.isLoading ? "Loading..." : (
             <>
-                <Current geoData={geoData} weatherData={weatherData}></Current>
-                <Forecast weatherData={weatherData}></Forecast>
+                <Current geoData={geoData} weatherData={weatherRes.data} tmpUnit={tmpUnit}></Current>
+                <Forecast weatherData={weatherRes.data} tmpUnit={tmpUnit}></Forecast>
             </>
         )
     );
 }
 
-async function fetchWeather(urlStr: string, { arg }: { arg: Record<string, string> }): Promise<GeoCodingResponse> {
-    const url = new URL(urlStr);
-    for (const param in arg) {
-        url.searchParams.set(param, arg[param]);
-    }
-    return fetch(url).then((res) => res.json());
+async function fetchWeatherAndParse({ url, params }: { url: string; params: Record<string, string> }) {
+    return fetchWeatherApi(url, params).then(parseWeatherData);
 }
 
+/**
+ * from https://open-meteo.com/en/docs
+ */
 function parseWeatherData(responses: WeatherApiResponse[]) {
     // Process first location. Add a for-loop for multiple locations or weather models
     const response = responses[0];

@@ -39,3 +39,8 @@ export interface WeatherData {
         temperature2mMin: Float32Array;
     };
 }
+
+export enum TemperatureUnit {
+    Celsius,
+    Fahrenheit
+}
