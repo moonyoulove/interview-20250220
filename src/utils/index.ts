@@ -59,8 +59,7 @@ export class Theme {
     }
 }
 
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
-type Callback = (...args: any[]) => any;
+type Callback = (..._args: unknown[]) => unknown;
 
 export function useThrottle<T extends Callback>(callback: T, delay: number = 100) {
     const timer = useRef(-1);

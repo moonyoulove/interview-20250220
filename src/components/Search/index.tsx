@@ -1,7 +1,8 @@
-import useSWRMutation from "swr/mutation";
+import { useRef } from "react";
+import { TriggerWithArgs } from "swr/mutation";
 import { stylesheet } from "typestyle";
-import { useDebounce } from "../../utils";
-
+import { GeoCodingResponse } from "../../types";
+import { Key } from "swr";
 const sx = stylesheet({
     search: {},
     searchBox: {},
@@ -10,33 +11,24 @@ const sx = stylesheet({
     temperatureBtn: {}
 });
 
-export default function Search() {
-    const { trigger, data, error } = useSWRMutation("https://geocoding-api.open-meteo.com/v1/search", fetchedGeoCoding);
+interface SearchProps {
+    geoFetchTrigger: TriggerWithArgs<GeoCodingResponse, unknown, Key, Record<string, string>>;
+}
 
-    const handleSearchBoxChange = useDebounce((event) => {
-        trigger({ name: event.target.value });
-    }, 1000);
+export default function Search({ geoFetchTrigger }: SearchProps) {
+    const searchBoxRef = useRef<HTMLInputElement>(null);
+    function handleSearchBoxChange() {
+        if (searchBoxRef.current) {
+            geoFetchTrigger({ name: searchBoxRef.current.value });
+        }
+    }
+
     return (
         <div className={sx.search}>
-            <input type="text" className={sx.searchBox} onChange={handleSearchBoxChange} />
-            {data ? JSON.stringify(data) : false}
-            <button className={sx.searchBtn}>Search</button>
+            <input type="text" className={sx.searchBox} ref={searchBoxRef} />
+            <button className={sx.searchBtn} onClick={handleSearchBoxChange}>Search</button>
             <button className={sx.favoritesBtn}>Favorites</button>
             <button className={sx.temperatureBtn}>°C/°F</button>
         </div>
     );
-}
-
-interface GeoCodingData {
-    name: string;
-    latitude: number;
-    longitude: number;
-}
-
-async function fetchedGeoCoding(urlStr: string, { arg }: { arg: { [param: string]: string } }): Promise<GeoCodingData> {
-    const url = new URL(urlStr);
-    for (const param in arg) {
-        url.searchParams.set(param, arg[param]);
-    }
-    return fetch(url).then((res) => res.json());
 }

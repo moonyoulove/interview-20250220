@@ -1,10 +1,15 @@
 import { stylesheet } from "typestyle";
+import { GeoLocation, WeatherData } from "../../types";
 
 const sx = stylesheet({
     forecast: {}
 });
 
-export default function Forecast() {
+interface ForeCastProps {
+    weatherData: WeatherData;
+}
+
+export default function Forecast({ weatherData }: ForeCastProps) {
     return (
         <li className={sx.forecast}>
             <ul>
