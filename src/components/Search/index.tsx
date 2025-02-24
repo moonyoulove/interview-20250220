@@ -8,11 +8,8 @@ import SVG from "../utils/Svg";
 
 const sx = stylesheet({
     search: {
-        $nest: {
-            "&>*": {
-                marginInline: "2px"
-            }
-        }
+        display: "flex",
+        gap: "5px"
     },
     searchBox: {
         borderRadius: "8px",
@@ -20,6 +17,8 @@ const sx = stylesheet({
         padding: "0.6em 1.2em",
         fontFamily: "inherit",
         transition: "border-color 0.25s",
+        flex: 1,
+        width: "100%",
         $nest: {
             "&:hover": {
                 borderColor: "#646cff"

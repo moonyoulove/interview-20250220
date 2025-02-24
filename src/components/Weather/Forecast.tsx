@@ -50,7 +50,7 @@ export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
     return (
         <ul className={cx(sx.forecast, sx.noListStyle)}>
             {Array.from({ length: 5 }, (_, i) => {
-                const { iconUrl } = convertWeatherCode(weatherCodeDescriptions, weatherData.daily.weatherCode[i], true, WeatherCodeIconSize.X2);
+                const { iconUrl } = convertWeatherCode(weatherCodeDescriptions, weatherData.daily.weatherCode[i], true, WeatherCodeIconSize.X4);
                 const maxTemperture = convertTemperature(weatherData.daily.temperature2mMax[i], tmpUnit);
                 const minTemperture = convertTemperature(weatherData.daily.temperature2mMin[i], tmpUnit);
 

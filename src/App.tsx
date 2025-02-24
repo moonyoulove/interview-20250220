@@ -8,6 +8,7 @@ import { GeoCodingResponse, TemperatureUnit } from "./types";
 
 cssRule("#root", {
     maxWidth: "1280px",
+    minHeight: "100vh",
     margin: "0 auto",
     padding: "2rem",
     textAlign: "center",
@@ -15,7 +16,7 @@ cssRule("#root", {
     flexDirection: "column",
     alignItems: "center",
     gap: "15px",
-    background: "linear-gradient(#ADD8E6, #F5F5DC, #CAAFCF)"
+    boxSizing: "border-box"
 });
 
 export default function App() {
