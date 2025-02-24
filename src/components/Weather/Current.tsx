@@ -1,9 +1,16 @@
-import { classes as cx, stylesheet } from "typestyle";
+import { classes as cx, keyframes, stylesheet } from "typestyle";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
 import dropIconUrl from "../../assets/humidity.svg";
 import windIconUrl from "../../assets/wind-speed.svg";
 import { GeoLocation, TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
+
+const cardAnimation = keyframes({
+    "0%": { transform: "rotateX(180deg)", filter: "grayscale(0%)" },
+    "30%": { filter: "grayscale(0%)" },
+    "50%": { filter: "grayscale(100%)" },
+    "100%": { transform: "rotateX(360deg)" }
+});
 
 const sx = stylesheet({
     current: {
@@ -14,7 +21,10 @@ const sx = stylesheet({
         borderRadius: "10px",
         paddingInline: "10px",
         background: "linear-gradient(#CAAFCF, #F5F5DC)",
-        boxShadow: "1px 1px 3px"
+        boxShadow: "1px 1px 3px",
+        animationName: cardAnimation,
+        animationDuration: "1s",
+        animationTimingFunction: "ease-out"
     },
     iconContainer: {},
     icon: {
@@ -101,11 +111,11 @@ export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps)
                 <div className={sx.subValueContainer}>
                     <div className={sx.subValue}>
                         <span className={sx.valueIcon} style={{ backgroundImage: `url("${windIconUrl}")` }}></span>
-                        <span className={sx.subValueUnit}>{weatherData.current.windSpeed10m.toFixed(0)}km/h</span>
+                        <span className={sx.subValueUnit}>{weatherData.current.windSpeed10m.toFixed(0)} km/h</span>
                     </div>
                     <div className={sx.subValue}>
                         <span className={sx.valueIcon} style={{ backgroundImage: `url("${dropIconUrl}")` }}></span>
-                        <span className={sx.subValueUnit}>{weatherData.current.relativeHumidity2m}%</span>
+                        <span className={sx.subValueUnit}>{weatherData.current.relativeHumidity2m} %</span>
                     </div>
                 </div>
             </div>

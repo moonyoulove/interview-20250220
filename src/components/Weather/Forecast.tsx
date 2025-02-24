@@ -1,8 +1,15 @@
 import { useRef } from "react";
-import { classes as cx, stylesheet } from "typestyle";
+import { classes as cx, keyframes, stylesheet } from "typestyle";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
 import { TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
+
+const cardAnimation = keyframes({
+    "0%": { transform: "rotateY(180deg)", filter: "grayscale(0%)" },
+    "30%": { filter: "grayscale(0%)" },
+    "50%": { filter: "grayscale(100%)" },
+    "100%": { transform: "rotateY(360deg)" }
+});
 
 const sx = stylesheet({
     forecast: {
@@ -36,7 +43,10 @@ const sx = stylesheet({
         gap: "3px",
         borderRadius: "10px",
         background: "linear-gradient(#F5F5DC, #ADD8E6)",
-        boxShadow: "1px 1px 3px"
+        boxShadow: "1px 1px 3px",
+        animationName: cardAnimation,
+        animationDuration: "1s",
+        animationTimingFunction: "ease-out"
     }
 });
 
@@ -47,6 +57,7 @@ interface ForeCastProps {
 
 export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
     const dateFormat = useRef(new Intl.DateTimeFormat("en-US", { month: "numeric", day: "numeric", weekday: "short" }));
+
     return (
         <ul className={cx(sx.forecast, sx.noListStyle)}>
             {Array.from({ length: 5 }, (_, i) => {
@@ -55,7 +66,7 @@ export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
                 const minTemperture = convertTemperature(weatherData.daily.temperature2mMin[i], tmpUnit);
 
                 return (
-                    <li key={i} className={sx.block}>
+                    <li key={i} className={sx.block} style={{ animationDelay: `${0.2 + i * 0.15}s` }}>
                         <div>{dateFormat.current.format(weatherData.daily.time[i])}</div>
                         <div className={sx.temperatureContainer}>
                             <span className={sx.temperatureValue}>{maxTemperture}/{minTemperture}</span>
