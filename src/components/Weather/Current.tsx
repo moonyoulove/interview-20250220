@@ -64,7 +64,7 @@ const sx = stylesheet({
     temperatureValue: {},
     temperatureUnit: {
         verticalAlign: "text-top",
-        top: "0.5em",
+        top: "1em",
         fontSize: "30%"
     },
     subValueContainer: {
@@ -100,17 +100,17 @@ export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps)
                 </div>
                 <div className={sx.subValueContainer}>
                     <div className={sx.subValue}>
-                        <span className={sx.valueIcon} style={{ backgroundImage: `url(${windIconUrl})` }}></span>
+                        <span className={sx.valueIcon} style={{ backgroundImage: `url("${windIconUrl}")` }}></span>
                         <span className={sx.subValueUnit}>{weatherData.current.windSpeed10m.toFixed(0)}km/h</span>
                     </div>
                     <div className={sx.subValue}>
-                        <span className={sx.valueIcon} style={{ backgroundImage: `url(${dropIconUrl})` }}></span>
+                        <span className={sx.valueIcon} style={{ backgroundImage: `url("${dropIconUrl}")` }}></span>
                         <span className={sx.subValueUnit}>{weatherData.current.relativeHumidity2m}%</span>
                     </div>
                 </div>
             </div>
             <div className={cx(sx.iconContainer, sx.block)}>
-                <div className={sx.icon} style={{ backgroundImage: `url(${iconUrl})` }}></div>
+                <div className={sx.icon} style={{ backgroundImage: `url("${iconUrl}")` }}></div>
                 <div className={sx.description}>{description}</div>
             </div>
         </div>

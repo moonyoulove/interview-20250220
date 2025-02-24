@@ -52,7 +52,7 @@ export default function Search({ geoFetchTrigger, handleTmpUnitChange, tmpUnit }
         <div className={sx.search}>
             <input type="text" className={sx.searchBox} ref={searchBoxRef} />
             <button className={sx.searchBtn} onClick={handleSearchBoxChange}>
-                <div className={sx.searchIcon} style={{ backgroundImage: `url(${searchIconUrl})` }}></div>
+                <div className={sx.searchIcon} style={{ backgroundImage: `url("${searchIconUrl}")` }}></div>
             </button>
             <button className={sx.temperatureBtn} onClick={handleTmpUnitChange}>{tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}</button>
         </div>

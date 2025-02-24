@@ -61,7 +61,7 @@ export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
                             <span className={sx.temperatureValue}>{maxTemperture}/{minTemperture}</span>
                             <sup className={sx.temperatureUnit}>{tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}</sup>
                         </div>
-                        <div className={sx.icon} style={{ backgroundImage: `url(${iconUrl})` }}></div>
+                        <div className={sx.icon} style={{ backgroundImage: `url("${iconUrl}")` }}></div>
                     </li>
                 );
             })}
