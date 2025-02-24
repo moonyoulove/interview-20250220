@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { customAlphabet } from "nanoid/non-secure";
 import { useCallback, useEffect, useRef } from "react";
 import { TemperatureUnit } from "../types";
@@ -107,7 +108,7 @@ export function convertTemperature(temperature: number, unit: TemperatureUnit) {
     if (unit === TemperatureUnit.Fahrenheit) {
         temperature = temperature * 9 / 5 + 32;
     }
-    return temperature.toFixed() + (unit === TemperatureUnit.Celsius ? "°C" : "°F");
+    return temperature.toFixed();
 }
 
 /**
@@ -125,23 +126,17 @@ export interface WeatherCodeDescription {
     icon: string;
 }
 
-export enum WeatherCodeIconBackground {
-    White = "w",
-    Transparent = "t"
-}
-
 export enum WeatherCodeIconSize {
     X1 = "",
     X2 = "@2x",
     X4 = "@4x"
 }
 
-export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weatherCode: number, isDay: boolean,
-    background: WeatherCodeIconBackground = WeatherCodeIconBackground.Transparent, size: WeatherCodeIconSize = WeatherCodeIconSize.X1)
+export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weatherCode: number, isDay: boolean, size: WeatherCodeIconSize = WeatherCodeIconSize.X1)
 {
     const { description, icon } = descriptions[weatherCode][isDay ? "day" : "night"];
     return {
         description,
-        iconUrl: `https://openweathermap.org/img/wn/${icon}_${background}${size}.png`
+        iconUrl: `https://openweathermap.org/img/wn/${icon}${size}.png`
     };
 }
