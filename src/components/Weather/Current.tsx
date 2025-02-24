@@ -14,7 +14,8 @@ const cardAnimation = keyframes({
 
 const sx = stylesheet({
     current: {
-        width: "fit-content",
+        maxWidth: "600px",
+        width: "100%",
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
@@ -49,7 +50,6 @@ const sx = stylesheet({
     },
     block: {
         minWidth: "100px",
-        maxWidth: "200px",
         aspectRatio: "1 / 1",
         flex: "1",
         display: "flex",
@@ -79,7 +79,9 @@ const sx = stylesheet({
     },
     subValueContainer: {
         display: "flex",
-        gap: "10px"
+        gap: "10px",
+        width: "100%",
+        justifyContent: "center"
     },
     subValue: {},
     subValueUnit: {
