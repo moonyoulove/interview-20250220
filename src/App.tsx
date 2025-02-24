@@ -6,13 +6,17 @@ import Search from "./components/Search";
 import Weather from "./components/Weather";
 import { GeoCodingResponse, TemperatureUnit } from "./types";
 
-cssRule(`#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-`);
+cssRule("#root", {
+    maxWidth: "1280px",
+    margin: "0 auto",
+    padding: "2rem",
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "15px",
+    background: "linear-gradient(#ADD8E6, #F5F5DC, #CAAFCF)"
+});
 
 export default function App() {
     const geoRes = useSWRMutation("https://geocoding-api.open-meteo.com/v1/search", fetchGeoCoding);

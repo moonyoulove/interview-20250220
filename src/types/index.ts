@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import "typestyle/lib/types";
-import * as CSS from 'csstype';
+import * as CSS from "csstype";
 
 export interface GeoCodingResponse {
     results: GeoLocation[];
@@ -52,4 +53,25 @@ declare module "typestyle/lib/types" {
     interface CSSProperties {
         textWrap?: "wrap" | "nowrap" | "balance" | "pretty" | "stable" | CSS.Globals;
     }
+}
+
+export interface WeatherCodeDescription {
+    description: string;
+    icon: string;
+}
+
+export enum WeatherCodeIconSize {
+    X1 = "",
+    X2 = "@2x",
+    X4 = "@4x"
+}
+
+/**
+ * from https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c
+ */
+export interface WeatherCodeDescriptions {
+    [dayIndex: string]: {
+        day: WeatherCodeDescription;
+        night: WeatherCodeDescription;
+    };
 }

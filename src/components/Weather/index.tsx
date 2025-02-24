@@ -1,14 +1,9 @@
 import { WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
 import { fetchWeatherApi } from "openmeteo";
 import useSWR from "swr";
-import { stylesheet } from "typestyle";
 import { GeoLocation, TemperatureUnit, WeatherData } from "../../types";
-import Current from "../Current";
-import Forecast from "../Forecast";
-
-const sx = stylesheet({
-    weather: {}
-});
+import Current from "./Current.tsx";
+import Forecast from "./Forecast.tsx";
 
 interface WeatherProps {
     geoData: GeoLocation;

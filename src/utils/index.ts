@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { customAlphabet } from "nanoid/non-secure";
 import { useCallback, useEffect, useRef } from "react";
-import { TemperatureUnit } from "../types";
+import { TemperatureUnit, WeatherCodeDescriptions, WeatherCodeIconSize } from "../types";
 
 export class Theme {
     prefix;
@@ -111,30 +110,11 @@ export function convertTemperature(temperature: number, unit: TemperatureUnit) {
     return temperature.toFixed();
 }
 
-/**
- * from https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0c
- */
-export interface WeatherCodeDescriptions {
-    [dayIndex: string]: {
-        day: WeatherCodeDescription;
-        night: WeatherCodeDescription;
-    };
-}
-
-export interface WeatherCodeDescription {
-    description: string;
-    icon: string;
-}
-
-export enum WeatherCodeIconSize {
-    X1 = "",
-    X2 = "@2x",
-    X4 = "@4x"
-}
-
-export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weatherCode: number, isDay: boolean, size: WeatherCodeIconSize = WeatherCodeIconSize.X1)
+export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weatherCode: number, isDay: boolean,
+    size: WeatherCodeIconSize = WeatherCodeIconSize.X1)
 {
-    const { description, icon } = descriptions[weatherCode][isDay ? "day" : "night"];
+    const { description } = descriptions[weatherCode][isDay ? "day" : "night"];
+    const { icon } = descriptions[weatherCode]["day"];
     return {
         description,
         iconUrl: `https://openweathermap.org/img/wn/${icon}${size}.png`
