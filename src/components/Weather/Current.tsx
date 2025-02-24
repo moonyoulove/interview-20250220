@@ -4,7 +4,6 @@ import dropIconUrl from "../../assets/humidity.svg";
 import windIconUrl from "../../assets/wind-speed.svg";
 import { GeoLocation, TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
-import SVG from "../utils/Svg";
 
 const sx = stylesheet({
     current: {
@@ -52,7 +51,10 @@ const sx = stylesheet({
         boxSizing: "content-box"
     },
     valueIcon: {
+        display: "inline-block",
         width: "1rem",
+        aspectRatio: "1 / 1",
+        backgroundSize: "contain",
         marginRight: "2px",
         verticalAlign: "text-top"
     },
@@ -98,11 +100,11 @@ export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps)
                 </div>
                 <div className={sx.subValueContainer}>
                     <div className={sx.subValue}>
-                        <SVG className={sx.valueIcon} href={windIconUrl} width={800} height={800}></SVG>
+                        <span className={sx.valueIcon} style={{ backgroundImage: `url(${windIconUrl})` }}></span>
                         <span className={sx.subValueUnit}>{weatherData.current.windSpeed10m.toFixed(0)}km/h</span>
                     </div>
                     <div className={sx.subValue}>
-                        <SVG className={sx.valueIcon} href={dropIconUrl} width={800} height={800}></SVG>
+                        <span className={sx.valueIcon} style={{ backgroundImage: `url(${dropIconUrl})` }}></span>
                         <span className={sx.subValueUnit}>{weatherData.current.relativeHumidity2m}%</span>
                     </div>
                 </div>

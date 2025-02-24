@@ -4,7 +4,6 @@ import { TriggerWithArgs } from "swr/mutation";
 import { stylesheet } from "typestyle";
 import searchIconUrl from "../../assets/search.svg";
 import { GeoCodingResponse, TemperatureUnit } from "../../types";
-import SVG from "../utils/Svg";
 
 const sx = stylesheet({
     search: {
@@ -27,7 +26,10 @@ const sx = stylesheet({
     },
     searchBtn: {},
     searchIcon: {
-        width: "1rem"
+        display: "inline-block",
+        width: "1rem",
+        aspectRatio: "1 / 1",
+        backgroundSize: "contain",
     },
     temperatureBtn: {}
 });
@@ -50,7 +52,7 @@ export default function Search({ geoFetchTrigger, handleTmpUnitChange, tmpUnit }
         <div className={sx.search}>
             <input type="text" className={sx.searchBox} ref={searchBoxRef} />
             <button className={sx.searchBtn} onClick={handleSearchBoxChange}>
-                <SVG className={sx.searchIcon} href={searchIconUrl} width={800} height={800}></SVG>
+                <div className={sx.searchIcon} style={{ backgroundImage: `url(${searchIconUrl})` }}></div>
             </button>
             <button className={sx.temperatureBtn} onClick={handleTmpUnitChange}>{tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}</button>
         </div>
