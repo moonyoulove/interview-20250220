@@ -1,27 +1,21 @@
 import { useRef } from "react";
-import { classes as cx, keyframes, stylesheet } from "typestyle";
+import { classes as cx, stylesheet } from "typestyle";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
 import { TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
-
-const cardAnimation = keyframes({
-    "0%": { transform: "rotateY(180deg)", filter: "grayscale(0%)" },
-    "30%": { filter: "grayscale(0%)" },
-    "50%": { filter: "grayscale(100%)" },
-    "100%": { transform: "rotateY(360deg)" }
-});
+import { sunriseAnimation } from "./style";
 
 const sx = stylesheet({
     forecast: {
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: "10px"
+        gap: "10px",
     },
     noListStyle: {
         listStyleType: "none",
         padding: 0,
-        margin: 0
+        margin: 0,
     },
     temperatureContainer: {},
     temperatureValue: {},
@@ -30,7 +24,10 @@ const sx = stylesheet({
         aspectRatio: "1 / 1",
         backgroundSize: "140%",
         width: "80px",
-        backgroundPosition: "center"
+        backgroundPosition: "center",
+        animationName: sunriseAnimation(100, 180, 0),
+        animationDuration: "1s",
+        animationTimingFunction: "ease-out",
     },
     block: {
         width: "150px",
@@ -42,12 +39,10 @@ const sx = stylesheet({
         textAlign: "center",
         gap: "3px",
         borderRadius: "10px",
-        background: "linear-gradient(#F5F5DC, #ADD8E6)",
+        background: "#ADD8E6",
         boxShadow: "1px 1px 3px",
-        animationName: cardAnimation,
-        animationDuration: "1s",
-        animationTimingFunction: "ease-out"
-    }
+        overflow: "hidden",
+    },
 });
 
 interface ForeCastProps {
@@ -61,7 +56,8 @@ export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
     return (
         <ul className={cx(sx.forecast, sx.noListStyle)}>
             {Array.from({ length: 5 }, (_, i) => {
-                const { iconUrl } = convertWeatherCode(weatherCodeDescriptions, weatherData.daily.weatherCode[i], true, WeatherCodeIconSize.X4);
+                const { description, iconUrl } = convertWeatherCode(weatherCodeDescriptions, weatherData.daily.weatherCode[i], true,
+                    WeatherCodeIconSize.X4);
                 const maxTemperture = convertTemperature(weatherData.daily.temperature2mMax[i], tmpUnit);
                 const minTemperture = convertTemperature(weatherData.daily.temperature2mMin[i], tmpUnit);
 
@@ -72,7 +68,7 @@ export default function Forecast({ weatherData, tmpUnit }: ForeCastProps) {
                             <span className={sx.temperatureValue}>{maxTemperture}/{minTemperture}</span>
                             <sup className={sx.temperatureUnit}>{tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}</sup>
                         </div>
-                        <div className={sx.icon} style={{ backgroundImage: `url("${iconUrl}")` }}></div>
+                        <div className={sx.icon} style={{ backgroundImage: `url("${iconUrl}")` }} aria-label={description}></div>
                     </li>
                 );
             })}

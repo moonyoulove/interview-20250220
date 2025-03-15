@@ -7,12 +7,16 @@ export class Theme {
     context: Record<string, string> = {};
     static hash = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 7);
 
-    constructor(prefix: string) {
+    constructor(prefix?: string) {
         this.prefix = prefix ? `--${prefix}-` : "--";
     }
 
-    get(name: string, fallbacks: string[] | null = null) {
-        const varName = this.context[name] ??= `${this.prefix}${name}_${Theme.hash()}`;
+    static makeName(name: string, prefix = "--") {
+        return `${prefix}${name}_${Theme.hash()}`;
+    }
+
+    get(name: string, fallbacks?: string[]) {
+        const varName = this.context[name] ??= Theme.makeName(name, this.prefix);
         if (Array.isArray(fallbacks)) {
             return `var(${[varName, ...fallbacks].join(", ")})`;
         } else {
@@ -59,7 +63,6 @@ export class Theme {
         delete this.context[name];
     }
 }
-
 
 // eslint-disable-next-line no-unused-vars
 type Callback = (...args: unknown[]) => unknown;
@@ -119,6 +122,6 @@ export function convertWeatherCode(descriptions: WeatherCodeDescriptions, weathe
     const { icon } = descriptions[weatherCode]["day"];
     return {
         description,
-        iconUrl: `https://openweathermap.org/img/wn/${icon}${size}.png`
+        iconUrl: `https://openweathermap.org/img/wn/${icon}${size}.png`,
     };
 }

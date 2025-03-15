@@ -1,16 +1,11 @@
-import { classes as cx, keyframes, stylesheet } from "typestyle";
+import { classes as cx, stylesheet } from "typestyle";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
-import dropIconUrl from "../../assets/humidity.svg";
-import windIconUrl from "../../assets/wind-speed.svg";
+import dropIconUrl from "../../assets/humidity.svg?no-inline";
+import windIconUrl from "../../assets/wind-speed.svg?no-inline";
 import { GeoLocation, TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
-
-const cardAnimation = keyframes({
-    "0%": { transform: "rotateX(180deg)", filter: "grayscale(0%)" },
-    "30%": { filter: "grayscale(0%)" },
-    "50%": { filter: "grayscale(100%)" },
-    "100%": { transform: "rotateX(360deg)" }
-});
+import SVG from "../utils/Svg";
+import { sunriseAnimation } from "./style";
 
 const sx = stylesheet({
     current: {
@@ -21,35 +16,37 @@ const sx = stylesheet({
         justifyContent: "center",
         borderRadius: "10px",
         paddingInline: "10px",
-        background: "linear-gradient(#CAAFCF, #F5F5DC)",
+        background: "#E1D2E3",
         boxShadow: "1px 1px 3px",
-        animationName: cardAnimation,
-        animationDuration: "1s",
-        animationTimingFunction: "ease-out"
+        overflow: "hidden",
     },
     iconContainer: {},
     icon: {
         aspectRatio: "1 / 1",
         backgroundSize: "140%",
         width: "80px",
-        backgroundPosition: "center"
+        backgroundPosition: "center",
+        animationName: sunriseAnimation(150, 180, 0),
+        animationDuration: "1s",
+        animationTimingFunction: "ease-out",
     },
     description: {},
     locationContainer: {
         alignItems: "center",
         textAlign: "center",
         textWrap: "balance",
-        overflowWrap: "anywhere"
+        overflowWrap: "anywhere",
     },
     firstName: {
-        fontSize: "2rem"
+        fontSize: "2rem",
     },
     secondName: {},
     valueContainer: {
-        flexDirection: "column"
+        flexDirection: "column",
     },
     block: {
         minWidth: "100px",
+        maxWidth: "200px",
         aspectRatio: "1 / 1",
         flex: "1",
         display: "flex",
@@ -58,35 +55,33 @@ const sx = stylesheet({
         flexDirection: "column",
         textAlign: "center",
         padding: "5px",
-        boxSizing: "content-box"
+        boxSizing: "content-box",
     },
     valueIcon: {
-        display: "inline-block",
         width: "1rem",
-        aspectRatio: "1 / 1",
         backgroundSize: "contain",
         marginRight: "2px",
-        verticalAlign: "text-top"
+        verticalAlign: "middle",
     },
     temperatureContainer: {
-        fontSize: "3.5rem"
+        fontSize: "3.5rem",
     },
     temperatureValue: {},
     temperatureUnit: {
         verticalAlign: "text-top",
         top: "1em",
-        fontSize: "30%"
+        fontSize: "30%",
     },
     subValueContainer: {
         display: "flex",
         gap: "10px",
         width: "100%",
-        justifyContent: "center"
+        justifyContent: "center",
     },
     subValue: {},
     subValueUnit: {
-        whiteSpace: "nowrap"
-    }
+        whiteSpace: "nowrap",
+    },
 });
 
 interface CurrentProps {
@@ -112,11 +107,11 @@ export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps)
                 </div>
                 <div className={sx.subValueContainer}>
                     <div className={sx.subValue}>
-                        <span className={sx.valueIcon} style={{ backgroundImage: `url("${windIconUrl}")` }}></span>
+                        <SVG className={sx.valueIcon} href={windIconUrl} width={800} height={800} ariaLabel="wind speed"></SVG>
                         <span className={sx.subValueUnit}>{weatherData.current.windSpeed10m.toFixed(0)} km/h</span>
                     </div>
                     <div className={sx.subValue}>
-                        <span className={sx.valueIcon} style={{ backgroundImage: `url("${dropIconUrl}")` }}></span>
+                        <SVG className={sx.valueIcon} href={dropIconUrl} width={800} height={800} ariaLabel="humidity"></SVG>
                         <span className={sx.subValueUnit}>{weatherData.current.relativeHumidity2m} %</span>
                     </div>
                 </div>

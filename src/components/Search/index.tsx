@@ -2,13 +2,14 @@ import { useRef } from "react";
 import { Key } from "swr";
 import { TriggerWithArgs } from "swr/mutation";
 import { stylesheet } from "typestyle";
-import searchIconUrl from "../../assets/search.svg";
+import searchIconUrl from "../../assets/search.svg?no-inline";
 import { GeoCodingResponse, TemperatureUnit } from "../../types";
+import SVG from "../utils/Svg";
 
 const sx = stylesheet({
     search: {
         display: "flex",
-        gap: "5px"
+        gap: "5px",
     },
     searchBox: {
         borderRadius: "8px",
@@ -20,9 +21,9 @@ const sx = stylesheet({
         width: "100%",
         $nest: {
             "&:hover": {
-                borderColor: "#646cff"
-            }
-        }
+                borderColor: "#646cff",
+            },
+        },
     },
     searchBtn: {},
     searchIcon: {
@@ -31,7 +32,7 @@ const sx = stylesheet({
         aspectRatio: "1 / 1",
         backgroundSize: "contain",
     },
-    temperatureBtn: {}
+    temperatureBtn: {},
 });
 
 interface SearchProps {
@@ -49,12 +50,16 @@ export default function Search({ geoFetchTrigger, handleTmpUnitChange, tmpUnit }
     }
 
     return (
-        <div className={sx.search}>
-            <input type="text" className={sx.searchBox} ref={searchBoxRef} />
-            <button className={sx.searchBtn} onClick={handleSearchBoxChange}>
-                <div className={sx.searchIcon} style={{ backgroundImage: `url("${searchIconUrl}")` }}></div>
+        <form className={sx.search} onSubmit={(event) => event.preventDefault()}>
+            <input type="text" className={sx.searchBox} ref={searchBoxRef} aria-label="location"/>
+            <button type="submit" className={sx.searchBtn} onClick={handleSearchBoxChange} aria-label="search">
+                <SVG className={sx.searchIcon} href={searchIconUrl} width={800} height={800}></SVG>
             </button>
-            <button className={sx.temperatureBtn} onClick={handleTmpUnitChange}>{tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}</button>
-        </div>
+            <button className={sx.temperatureBtn} onClick={handleTmpUnitChange}
+                aria-label={tmpUnit === TemperatureUnit.Celsius ? "change to Fahrenheit" : "change to Celsius"}
+            >
+                {tmpUnit === TemperatureUnit.Celsius ? "°C" : "°F"}
+            </button>
+        </form>
     );
 }
