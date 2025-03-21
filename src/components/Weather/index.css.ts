@@ -1,4 +1,4 @@
-import { keyframes } from "typestyle";
+import { keyframes } from "@vanilla-extract/css";
 
 export const cardHorizAnimation = keyframes({
     "0%": { transform: "rotateX(180deg)", filter: "grayscale(0%)" },

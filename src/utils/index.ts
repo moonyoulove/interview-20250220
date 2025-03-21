@@ -1,6 +1,6 @@
+import { TemperatureUnit, WeatherCodeDescriptions, WeatherCodeIconSize } from "../types";
 import { customAlphabet } from "nanoid/non-secure";
 import { useCallback, useEffect, useRef } from "react";
-import { TemperatureUnit, WeatherCodeDescriptions, WeatherCodeIconSize } from "../types";
 
 export class Theme {
     prefix;
@@ -64,7 +64,7 @@ export class Theme {
     }
 }
 
-// eslint-disable-next-line no-unused-vars
+ 
 type Callback = (...args: unknown[]) => unknown;
 
 export function useThrottle<T extends Callback>(callback: T, delay: number = 100) {

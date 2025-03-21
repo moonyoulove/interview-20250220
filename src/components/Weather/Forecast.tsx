@@ -1,49 +1,9 @@
-import { useRef } from "react";
-import { classes as cx, stylesheet } from "typestyle";
+import * as sx from "./Forecast.css";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
 import { TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
-import { sunriseAnimation } from "./style";
-
-const sx = stylesheet({
-    forecast: {
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: "10px",
-    },
-    noListStyle: {
-        listStyleType: "none",
-        padding: 0,
-        margin: 0,
-    },
-    temperatureContainer: {},
-    temperatureValue: {},
-    temperatureUnit: {},
-    icon: {
-        aspectRatio: "1 / 1",
-        backgroundSize: "140%",
-        width: "80px",
-        backgroundPosition: "center",
-        animationName: sunriseAnimation(100, 180, 0),
-        animationDuration: "1s",
-        animationTimingFunction: "ease-out",
-    },
-    block: {
-        width: "150px",
-        height: "150px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        textAlign: "center",
-        gap: "3px",
-        borderRadius: "10px",
-        background: "#ADD8E6",
-        boxShadow: "1px 1px 3px",
-        overflow: "hidden",
-    },
-});
+import cx from "clsx/lite";
+import { useRef } from "react";
 
 interface ForeCastProps {
     weatherData: WeatherData;

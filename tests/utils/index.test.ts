@@ -1,6 +1,6 @@
+import { TemperatureUnit } from "@/types";
+import { convertTemperature } from "@/utils/index.ts";
 import { describe, expect, test } from "vitest";
-import { convertTemperature } from "../../src/utils/index.ts";
-import { TemperatureUnit } from "../../src/types";
 
 describe("convertTemperature", () => {
     test("should convert Celsius to Fahrenheit", () => {

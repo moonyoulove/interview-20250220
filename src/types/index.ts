@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
-import "typestyle/lib/types";
-import * as CSS from "csstype";
-
+ 
 export interface GeoCodingResponse {
     results: GeoLocation[];
 }
@@ -47,12 +44,6 @@ export interface WeatherData {
 export enum TemperatureUnit {
     Celsius,
     Fahrenheit
-}
-
-declare module "typestyle/lib/types" {
-    interface CSSProperties {
-        textWrap?: "wrap" | "nowrap" | "balance" | "pretty" | "stable" | CSS.Globals;
-    }
 }
 
 export interface WeatherCodeDescription {

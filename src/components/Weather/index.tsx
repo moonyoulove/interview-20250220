@@ -1,9 +1,9 @@
-import { WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
-import { fetchWeatherApi } from "openmeteo";
-import useSWR from "swr";
 import { GeoLocation, TemperatureUnit, WeatherData } from "../../types";
 import Current from "./Current.tsx";
 import Forecast from "./Forecast.tsx";
+import { WeatherApiResponse } from "@openmeteo/sdk/weather-api-response";
+import { fetchWeatherApi } from "openmeteo";
+import useSWR from "swr";
 
 interface WeatherProps {
     geoData: GeoLocation;

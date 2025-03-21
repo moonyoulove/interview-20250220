@@ -1,23 +1,10 @@
-import { useState } from "react";
-import { Key } from "swr";
-import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
-import { cssRule } from "typestyle";
+import "./App.css";
 import Search from "./components/Search";
 import Weather from "./components/Weather";
 import { GeoCodingResponse, TemperatureUnit } from "./types";
-
-cssRule("#root", {
-    maxWidth: "1280px",
-    minHeight: "100vh",
-    margin: "0 auto",
-    padding: "2rem",
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "15px",
-    boxSizing: "border-box"
-});
+import { useState } from "react";
+import { Key } from "swr";
+import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
 
 export default function App() {
     const geoRes = useSWRMutation("https://geocoding-api.open-meteo.com/v1/search", fetchGeoCoding);

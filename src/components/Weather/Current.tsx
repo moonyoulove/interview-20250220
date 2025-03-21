@@ -1,88 +1,11 @@
-import { classes as cx, stylesheet } from "typestyle";
+import * as sx from "./Current.css";
 import weatherCodeDescriptions from "../../assets/descriptions.json";
 import dropIconUrl from "../../assets/humidity.svg?no-inline";
 import windIconUrl from "../../assets/wind-speed.svg?no-inline";
 import { GeoLocation, TemperatureUnit, WeatherCodeIconSize, WeatherData } from "../../types";
 import { convertTemperature, convertWeatherCode } from "../../utils";
 import SVG from "../utils/Svg";
-import { sunriseAnimation } from "./style";
-
-const sx = stylesheet({
-    current: {
-        maxWidth: "600px",
-        width: "100%",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        borderRadius: "10px",
-        paddingInline: "10px",
-        background: "#E1D2E3",
-        boxShadow: "1px 1px 3px",
-        overflow: "hidden",
-    },
-    iconContainer: {},
-    icon: {
-        aspectRatio: "1 / 1",
-        backgroundSize: "140%",
-        width: "80px",
-        backgroundPosition: "center",
-        animationName: sunriseAnimation(150, 180, 0),
-        animationDuration: "1s",
-        animationTimingFunction: "ease-out",
-    },
-    description: {},
-    locationContainer: {
-        alignItems: "center",
-        textAlign: "center",
-        textWrap: "balance",
-        overflowWrap: "anywhere",
-    },
-    firstName: {
-        fontSize: "2rem",
-    },
-    secondName: {},
-    valueContainer: {
-        flexDirection: "column",
-    },
-    block: {
-        minWidth: "100px",
-        maxWidth: "200px",
-        aspectRatio: "1 / 1",
-        flex: "1",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        textAlign: "center",
-        padding: "5px",
-        boxSizing: "content-box",
-    },
-    valueIcon: {
-        width: "1rem",
-        backgroundSize: "contain",
-        marginRight: "2px",
-        verticalAlign: "middle",
-    },
-    temperatureContainer: {
-        fontSize: "3.5rem",
-    },
-    temperatureValue: {},
-    temperatureUnit: {
-        verticalAlign: "text-top",
-        top: "1em",
-        fontSize: "30%",
-    },
-    subValueContainer: {
-        display: "flex",
-        gap: "10px",
-        width: "100%",
-        justifyContent: "center",
-    },
-    subValue: {},
-    subValueUnit: {
-        whiteSpace: "nowrap",
-    },
-});
+import cx from "clsx/lite";
 
 interface CurrentProps {
     geoData: GeoLocation;
@@ -95,7 +18,7 @@ export default function Current({ geoData, weatherData, tmpUnit }: CurrentProps)
         WeatherCodeIconSize.X4);
 
     return (
-        <div className={sx.current}>
+        <div className={sx.main}>
             <div className={cx(sx.locationContainer, sx.block)}>
                 <div className={sx.firstName}>{geoData.name}</div>
                 {geoData.admin1 ? <div className={sx.secondName}>{geoData.admin1}</div> : null}
